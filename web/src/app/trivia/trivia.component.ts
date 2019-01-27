@@ -19,11 +19,14 @@ export class TriviaComponent implements OnInit {
     this.http.get(this.url + this.service.getTopic()).subscribe(
       (res: any) => {
         console.log(res);
+        this.questions = res[0];
+        this.answers = res[1];
       }
     );
   }
 
   onEnter(ans: String) {
     //
+    console.log('HELLO');
   }
 }

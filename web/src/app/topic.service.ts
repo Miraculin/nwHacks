@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TopicService {
-  private topic: String;
+  private topic: String = '';
 
   constructor() { }
 

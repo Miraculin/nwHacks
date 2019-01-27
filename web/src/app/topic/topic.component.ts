@@ -38,6 +38,7 @@ export class TopicComponent implements OnInit {
     this.http.put(this.url + 'trivia/' + elem.target.textContent + '/5', elem.target.textContent, httpOptions).subscribe(
       res => {
         console.log(res);
+        this.router.navigate(['/trivia']);
       },
       err => {
         console.log('Error occured');
