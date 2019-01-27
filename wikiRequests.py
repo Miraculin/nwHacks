@@ -17,6 +17,9 @@ class Article:
     def printCorpus(self):
         print(self.corpus)
 
+    def getCorpus(self):
+        return getCorpus
+        
     def setSections(self, sections):
         self.sections = sections
 
