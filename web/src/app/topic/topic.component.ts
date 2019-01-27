@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json'
+  })
+};
 
 @Component({
   selector: 'app-topic',
@@ -8,16 +14,15 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./topic.component.css']
 })
 export class TopicComponent implements OnInit {
-  private topic: String;
   private topicButtons: String[];
-  private url = 'http://127.0.0.1:5000/categories';
+  private url = 'http://127.0.0.1:5000/';
 
   constructor(
     private router: Router,
     private http: HttpClient) { }
 
   ngOnInit() {
-    this.http.get(this.url).subscribe(
+    this.http.get(this.url + 'categories').subscribe(
       (res: any) => {
         this.topicButtons = res.map(obj => obj.title).slice(0, 5);
         this.topicButtons = this.topicButtons.map(ele => ele.slice(9));
@@ -27,12 +32,17 @@ export class TopicComponent implements OnInit {
   }
 
   onClick(elem: any) {
-    this.topic = elem.target.textContent;
-    console.log(this.topic);
+    this.http.put(this.url + 'trivia/' + elem.target.textContent + '/5', elem.target.textContent, httpOptions).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log('Error occured');
+      }
+    );
   }
 
   onEnter(value: String) {
-    this.topic = value;
     this.router.navigate(['/trivia']);
   }
 }
