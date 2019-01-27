@@ -18,8 +18,8 @@ class Article:
         print(self.corpus)
 
     def getCorpus(self):
-        return getCorpus
-        
+        return self.corpus
+
     def setSections(self, sections):
         self.sections = sections
 
@@ -48,6 +48,17 @@ def createArticleByTitle(pageTitle):
     ret.setCorpus(result["query"]["pages"][0]["revisions"][0]["content"])
     ret.printCorpus()
     return ret
+
+def addCorpus(Article, pageTitle):
+    req = {"action":"query",
+            "format":"json",
+            "titles":pageTitle,
+            "formatversion":2,
+            "prop": "revisions",
+            "rvprop": "content"}
+    result = requests.get(API_LINK, params=req).json();
+    Article.setCorpus(result["query"]["pages"][0]["revisions"][0]["content"])
+    return Article
 
 def createArticleByTitleList(pageTitles):
     retList=[]
@@ -103,6 +114,15 @@ def createSectionsByTitle(pageTitle):
     sections = createSectionsDictionary(pageTitle)
     i=0;
     sectCorpus = {}
+    req = {"action":"parse",
+            "page": pageTitle,
+            "prop":"text",
+            "section":i,
+            "format":"json",
+            "formatversion":2}
+    result = requests.get(API_LINK, params=req).json();
+    sectCorpus["Section0"] = BeautifulSoup(result["parse"]["text"]).get_text()
+    i+=1
     for section in sections:
         req = {"action":"parse",
                 "page": pageTitle,
@@ -111,10 +131,11 @@ def createSectionsByTitle(pageTitle):
                 "format":"json",
                 "formatversion":2}
         result = requests.get(API_LINK, params=req).json();
-        sectCorpus[sections[i]] = BeautifulSoup(result["parse"]["text"]).get_text()
+        print(result)
+        sectCorpus[sections[i-1]] = BeautifulSoup(result["parse"]["text"]).get_text()
         i+=1
     ret.setSections(sectCorpus)
-    ret.printSections()
+    addCorpus(ret, pageTitle)
     return ret
 
 def createSectionsDictionary(pageTitle):
@@ -125,9 +146,10 @@ def createSectionsDictionary(pageTitle):
             "prop": "sections",
             }
     result = requests.get(API_LINK, params=req).json()
-    ret = [None]*len(result["parse"]["sections"])
+    print(result)
+    ret = [None]*(len(result["parse"]["sections"]))
+    print(ret)
     for section in result["parse"]["sections"]:
-        print(section["line"])
         ret[int(section["index"])-1] = section["line"]
     return ret
 
