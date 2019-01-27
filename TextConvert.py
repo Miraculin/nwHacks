@@ -2,6 +2,7 @@ from textblob import *
 # from bs4 import BeautifulSoup
 import wikipedia
 from grammarbot import GrammarBotClient
+import wikiRequests
 
 string = wikipedia.summary("Burj Khalifa")
 

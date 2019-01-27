@@ -2,9 +2,12 @@ from flask import Flask
 from flask_restful import Resource, Api
 import wikiRequests
 #import Converter here
+import TextConvert
+from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 articles = {}
 
@@ -20,9 +23,11 @@ class Quiz(Resource):
             articles[topic] = article
         return list(map(lambda x: x.serialize(), articles[topic]))
     def get(self, topic):
-
         #should return converted list of questions and leave it to ui
-        return list(map(lambda x: x.serialize(), articles[topic]))
+        #return list(map(lambda x: x.serialize(), articles[topic]))
+        ListOfQuestions = list(map(lambda x: TextConvert.sentenceToQuestion(TextConvert.paragraph(x.getCorpus())), articles[topic]))
+        flat_list = [item for sublist in ListOfQuestions for item in sublist]
+        return flat_list
 
 class Categories(Resource):
     def get(self):
