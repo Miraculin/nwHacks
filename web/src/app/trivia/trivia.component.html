@@ -7,14 +7,14 @@
   <div class="row">
       <div class="col-md-12 mb-4 white-text text-center">
           <h1 class="h1-reponsive pt-md-5 pt-5" style="font-family: 'Roboto', sans-serif;"><strong>
-            Why did the chicken cross the road?
+            {{currentQ}}
           </strong></h1>
       </div>
   </div>
 
   <div class="answer">
-    <form class="answer-box" style="font-family: 'Roboto', sans-serif;">
-      <input type="text" placeholder="Enter your answer here...">
+    <form class="answer-box" onsubmit="return false" style="font-family: 'Roboto', sans-serif;">
+        <input #box (keyup.enter)="onEnter(box.value)" placeholder="Enter your answer here...">
     </form>
   </div>
 </div>
