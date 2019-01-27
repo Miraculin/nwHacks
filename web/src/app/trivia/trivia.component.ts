@@ -11,6 +11,7 @@ export class TriviaComponent implements OnInit {
   private questions: String[] = [];
   private answers: String[] = [];
   private currentQ: String = 'No questions found';
+  private currentI = 0;
   private url = 'http://127.0.0.1:5000/trivia/';
 
   constructor(private http: HttpClient, private service: TopicService) { }
@@ -27,7 +28,7 @@ export class TriviaComponent implements OnInit {
           }
         }
         if (this.questions.length !== 0) {
-          this.currentQ = this.questions[0];
+          this.currentQ = this.questions[this.currentI];
         }
         console.log(this.questions);
         console.log(this.answers);
@@ -38,9 +39,10 @@ export class TriviaComponent implements OnInit {
   onEnter(ans: String) {
     if (this.answers.indexOf(ans) !== -1) {
       console.log('ya');
-      if (this.questions.length !== 0) {
+      if (this.currentI >= this.questions.length) {
         console.log('aetaewt');
-        this.currentQ = this.questions.shift();
+        this.currentI++;
+        this.currentQ = this.questions[this.currentI];
       } else {
         this.currentQ = 'No more questions';
       }
