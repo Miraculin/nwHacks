@@ -1,15 +1,6 @@
 from textblob import *
-# from bs4 import BeautifulSoup
-import wikipedia
-from grammarbot import GrammarBotClient
-import wikiRequests
 
-string = wikipedia.summary("Burj Khalifa")
-
-if not string:
-    print("Wiki Sum Fail")
-
-def paragraph(para):
+def superlativeFilter(para):
     blob = TextBlob(para)
     retList = []
     for sentence in blob.sentences:
@@ -23,7 +14,6 @@ def sentenceToQuestion(list):
     questionlist = []
     answerlist = []
     result = []
-    client = GrammarBotClient()
 
     for sen in list:
         tags = sen.tags
@@ -34,7 +24,7 @@ def sentenceToQuestion(list):
         #     question = createQuestion(tags, 1)
 
         if tags[0][1] == "DT":
-            if tags[1][1][0] == "N" and not tags[2][1] == "IN":
+            if tags[1][1][0] == "N" and tags[1][1][1] != "N" and not tags[2][1] == "IN":
                 answer = tags[1][0]
                 tagindex = 1
                 while tags[tagindex][1][0] == "N" and tagindex < len(tags):
@@ -62,8 +52,6 @@ def sentenceToQuestion(list):
                 print(question)
                 print(answer)
 
-                print(client.check(question))
-
                 questionlist.append(question)
                 answerlist.append(answer)
 
@@ -78,8 +66,3 @@ def createQuestion(sentence, index):
     index += 1
 
     return question
-
-asdf = "Aaron is the first man on Earth."
-
-# print (paragraph(string))
-print ( sentenceToQuestion(paragraph(string)) )
