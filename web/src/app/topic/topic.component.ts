@@ -44,6 +44,14 @@ export class TopicComponent implements OnInit {
         console.log('Error occured');
       }
     );
+
+    var x = document.getElementById("scroller");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+
   }
 
   onEnter(value: String) {

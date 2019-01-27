@@ -11,7 +11,8 @@ export class TriviaComponent implements OnInit {
   private questions: String[] = [];
   private answers: String[] = [];
   private currentQ: String = 'No questions found';
-  private currentI = 0;
+  private status: String = '';
+  private currentI: number = 0;
   private url = 'http://127.0.0.1:5000/trivia/';
 
   constructor(private http: HttpClient, private service: TopicService) { }
@@ -43,9 +44,13 @@ export class TriviaComponent implements OnInit {
         console.log('aetaewt');
         this.currentI++;
         this.currentQ = this.questions[this.currentI];
+        this.status = 'Correct Answer! Keep going'
       } else {
         this.currentQ = 'No more questions';
+        this.status = ''
       }
+    } else {
+      this.status = 'Incorrect Answer. Please try again! :)'
     }
   }
 }

@@ -1,4 +1,6 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
 
 <div class="view" style="background-image: url('../../assets/homepage.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center; height: 100vh;">
   <h1 class="h1-reponsive text-uppercase font-weight-bold mb-0 pt-md-5 pt-5"><strong>Wikivia</strong></h1>
@@ -17,7 +19,13 @@
           <a class="btn btn-outline-dark" (click)="onClick($event)">{{category}}</a>
       </div>
     </div>
+
   </div>
+
+  <div class="categories row fa-3x">
+    <i id="scroller" style="display: none" class="fas fa-spinner fa-spin"></i>
+  </div>
+
 
   <div class="answer">
     <form class="answer-box" onsubmit="return false" style="font-family: 'Roboto', sans-serif;">
