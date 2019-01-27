@@ -19,10 +19,16 @@ export class TopicComponent implements OnInit {
   ngOnInit() {
     this.http.get(this.url).subscribe(
       (res: any) => {
-        this.topicButtons = res.body;
+        this.topicButtons = res.map(obj => obj.title).slice(0, 5);
+        this.topicButtons = this.topicButtons.map(ele => ele.slice(9));
         console.log(this.topicButtons);
       }
     );
+  }
+
+  onClick(elem: any) {
+    this.topic = elem.target.textContent;
+    console.log(this.topic);
   }
 
   onEnter(value: String) {
