@@ -36,15 +36,31 @@ def createArticleByTitleList(pageTitles):
             "prop": "revisions",
             "rvprop": "content"}
     result = requests.get(API_LINK, params=req).json();
+    print(result)
     for page in result["query"]["pages"]:
         temp = Article(page["title"])
         temp.setCorpus(page["revisions"][0]["content"])
         retList.append(temp)
     return retList
 
-def createArticleByCategory(category, limit):
-    return None
+def createArticlesByCategory(category, limit):
+    retList=[]
+    req = {"action":"query",
+            "list":"categorymembers",
+            "cmtitle":"Category:"+category,
+            "cmlimit":limit,
+            "format":"json",
+            "formatversion":2}
+    result = requests.get(API_LINK, params=req).json();
+    titles = []
+    for member in result["query"]["categorymembers"]:
+        titles.append(member["title"])
+    if len(titles) == 0:
+        return []
+    return createArticleByTitleList(titles)
 
 if __name__ == "__main__":
     createArticleByTitle("Canada")
     createArticleByTitleList(["Ireland", "Iceland"])
+    createArticlesByCategory("Classical_studies",10)
+    createArticlesByCategory("Classics",10)
