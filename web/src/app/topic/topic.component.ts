@@ -32,7 +32,6 @@ export class TopicComponent implements OnInit {
   }
 
   onClick(elem: any) {
-
     this.http.put(this.url + 'trivia/' + elem.target.textContent + '/5', elem.target.textContent, httpOptions).subscribe(
       res => {
         console.log(res);
@@ -44,7 +43,6 @@ export class TopicComponent implements OnInit {
   }
 
   onEnter(value: String) {
-    this.topic = value;
     this.router.navigate(['/trivia']);
   }
 }
