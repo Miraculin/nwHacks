@@ -10,8 +10,8 @@
   </div>
 
   <div class="answer">
-    <form class="answer-box">
-      <input type="text" placeholder="Enter your topic here...">
+    <form class="answer-box h1" onsubmit="return false">
+      <input #box (keyup.enter)="onEnter(box.value)" placeholder="Enter your topic here...">
     </form>
   </div>
 </div>
