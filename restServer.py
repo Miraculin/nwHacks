@@ -25,7 +25,7 @@ class Quiz(Resource):
     def get(self, topic):
         #should return converted list of questions and leave it to ui
         #return list(map(lambda x: x.serialize(), articles[topic]))
-        ListOfQuestions = list(map(lambda x: TextConvert.sentenceToQuestion(TextConvert.paragraph(x.getCorpus())), articles[topic]))
+        ListOfQuestions = list(map(lambda x: TextConvert.sentenceToQuestion(TextConvert.superlativeFilter(x.getCorpus())), articles[topic]))
         flat_list = [item for sublist in ListOfQuestions for item in sublist]
         return flat_list
 
