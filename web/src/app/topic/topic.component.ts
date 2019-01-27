@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { TopicService } from '../topic.service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,7 +20,8 @@ export class TopicComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private service: TopicService) { }
 
   ngOnInit() {
     this.http.get(this.url + 'categories').subscribe(
@@ -32,9 +34,11 @@ export class TopicComponent implements OnInit {
   }
 
   onClick(elem: any) {
+    this.service.setTopic(elem.target.textContent);
     this.http.put(this.url + 'trivia/' + elem.target.textContent + '/5', elem.target.textContent, httpOptions).subscribe(
       res => {
         console.log(res);
+        this.router.navigate(['/trivia']);
       },
       err => {
         console.log('Error occured');
