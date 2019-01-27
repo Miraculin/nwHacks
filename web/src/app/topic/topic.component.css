@@ -2,4 +2,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  visibility: hidden;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 50px;
+}
+
+.question {
+  padding: 0 0 0 0;
+}
+
+.categories {
+  margin-top: 50px;
+}
+
+.category {
+  padding: 5px 5px 5px 5px;
 }
