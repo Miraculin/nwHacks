@@ -3,7 +3,7 @@ import json
 from bs4 import BeautifulSoup
 
 API_LINK = 'https://en.wikipedia.org/w/api.php'
-BAD_SECTIONS = ["See Also", "External Links", "References", "Further Reading"]
+BAD_SECTIONS = ["See Also", "External Links", "References", "Further Reading", "Notes"]
 
 class Article:
 
@@ -47,7 +47,7 @@ def createArticleByTitle(pageTitle):
             "rvprop": "content"}
     result = requests.get(API_LINK, params=req).json();
     ret.setCorpus(result["query"]["pages"][0]["revisions"][0]["content"])
-    ret.printCorpus()
+    #ret.printCorpus()
     return ret
 
 def addCorpus(Article, pageTitle):
@@ -147,9 +147,9 @@ def createSectionsDictionary(pageTitle):
             "prop": "sections",
             }
     result = requests.get(API_LINK, params=req).json()
-    print(result)
+    #print(result)
     ret = [None]*(len(result["parse"]["sections"]))
-    print(ret)
+    #print(ret)
     for section in result["parse"]["sections"]:
         if (not section["line"] in BAD_SECTIONS):
             ret[int(section["index"])-1] = section["line"]
@@ -164,7 +164,7 @@ def getRandomPages():
             "rnnamespace":0
             }
     result = requests.get(API_LINK, params=req).json()
-    print(result["query"]["random"])
+    #print(result["query"]["random"])
     return result["query"]["random"]
 
 def getRandomCategories():
