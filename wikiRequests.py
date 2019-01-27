@@ -212,6 +212,8 @@ def parseWikiHMTL(pageTitle):
         elem.decompose()
     for elem in soup.find_all(class_="mw-headline"):
         elem.decompose()
+    for elem in soup.find_all(class_="toc"):
+        elem.decompose()
     #print(soup.get_text())
     return soup.get_text()
 
