@@ -3,6 +3,7 @@ import json
 from bs4 import BeautifulSoup
 
 API_LINK = 'https://en.wikipedia.org/w/api.php'
+BAD_SECTIONS = ["See Also", "External Links", "References", "Further Reading"]
 
 class Article:
 
@@ -150,7 +151,8 @@ def createSectionsDictionary(pageTitle):
     ret = [None]*(len(result["parse"]["sections"]))
     print(ret)
     for section in result["parse"]["sections"]:
-        ret[int(section["index"])-1] = section["line"]
+        if (not section["line"] in BAD_SECTIONS):
+            ret[int(section["index"])-1] = section["line"]
     return ret
 
 def getRandomPages():
