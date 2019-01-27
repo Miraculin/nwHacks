@@ -37,7 +37,7 @@ export class TriviaComponent implements OnInit {
   }
 
   onEnter(ans: String) {
-    if (this.answers.indexOf(ans) !== -1) {
+    if (this.answers[this.currentI] === ans) {
       console.log('ya');
       if (this.currentI >= this.questions.length) {
         console.log('aetaewt');
