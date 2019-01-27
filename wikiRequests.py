@@ -1,4 +1,5 @@
 import requests
+import json
 
 API_LINK = 'https://en.wikipedia.org/w/api.php'
 
@@ -22,8 +23,9 @@ def createArticleByTitle(pageTitle):
             "prop": "revisions",
             "rvprop": "content"}
     result = requests.get(API_LINK, params=req).json();
-    Article.setCorpus(result["query"]["pages"][0]["revisions"]["content"])
-    Article.printCorpus
+    print(result["query"]["pages"][0]["revisions"][0]["content"])
+    ret.setCorpus(result["query"]["pages"][0]["revisions"][0]["content"])
+    ret.printCorpus()
     return ret
 
 if __name__ == "__main__":
