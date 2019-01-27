@@ -8,6 +8,8 @@ class Article:
 
     def __init__(self, title):
         self.title = title
+        self.corpus = None
+        self.sections = None
 
     def setCorpus(self, text):
         self.corpus = text
@@ -23,6 +25,13 @@ class Article:
 
     def getSections(self):
         return self.sections
+
+    def serialize(self):
+        return {
+            "title":self.title,
+            "corpus":self.corpus,
+            "sections":self.sections
+        }
 
 def createArticleByTitle(pageTitle):
     ret = Article(pageTitle)
@@ -68,6 +77,24 @@ def createArticlesByCategory(category, limit):
         return []
     return createArticleByTitleList(titles)
 
+def createSectionsByCategory(category, limit):
+    retList=[]
+    req = {"action":"query",
+            "list":"categorymembers",
+            "cmtitle":"Category:"+category,
+            "cmlimit":limit,
+            "format":"json",
+            "formatversion":2}
+    result = requests.get(API_LINK, params=req).json();
+    titles = []
+    for member in result["query"]["categorymembers"]:
+        titles.append(member["title"])
+    if len(titles) == 0:
+        return []
+    for title in titles:
+        retList.append(createSectionsByTitle(title))
+    return retList
+
 def createSectionsByTitle(pageTitle):
     ret = Article(pageTitle)
     sections = createSectionsDictionary(pageTitle)
@@ -100,6 +127,33 @@ def createSectionsDictionary(pageTitle):
         print(section["line"])
         ret[int(section["index"])-1] = section["line"]
     return ret
+
+def getRandomPages():
+    req = {"action":"query",
+            "format":"json",
+            "list":"random",
+            "rnlimit":5,
+            "formatversion":2,
+            "rnnamespace":0
+            }
+    result = requests.get(API_LINK, params=req).json()
+    print(result["query"]["random"])
+    return result["query"]["random"]
+
+def getRandomCategories():
+    pages = getRandomPages()
+    titles = list(map(lambda x: x["title"],pages))
+    retList=[]
+    for title in titles:
+        req = {"action":"query",
+                "format":"json",
+                "titles":title,
+                "formatversion":2,
+                "prop": "categories"
+                }
+        result = requests.get(API_LINK, params=req).json()
+        retList.extend(result["query"]["pages"][0]["categories"])
+    return retList
 
 if __name__ == "__main__":
     createArticleByTitle("Canada")
