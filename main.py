@@ -1,10 +1,12 @@
 import wikiRequests
-import abc
+import TextConvert
 
 def main():
     canada = wikiRequests.createSectionsByTitle("Canada")
-    print(canada.getSections()["Demographics"])
-    abc.convertSentenceToQuestion(paragraph(canada.getSections()["Demographics"]))
+    # print(canada.getSections()["Demographics"])
+    result = TextConvert.sentenceToQuestion(TextConvert.superlativeFilter(canada.getCorpus()))
 
+    print(result[0])
+    print(result[1])
 if __name__ == "__main__":
     main()
