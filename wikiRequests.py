@@ -58,7 +58,7 @@ def addCorpus(Article, pageTitle):
             "prop": "revisions",
             "rvprop": "content"}
     result = requests.get(API_LINK, params=req).json();
-    Article.setCorpus(result["query"]["pages"][0]["revisions"][0]["content"])
+    Article.setCorpus(BeautifulSoup(result["query"]["pages"][0]["revisions"][0]["content"]).get_text())
     return Article
 
 def createArticleByTitleList(pageTitles):
@@ -132,11 +132,12 @@ def createSectionsByTitle(pageTitle):
                 "format":"json",
                 "formatversion":2}
         result = requests.get(API_LINK, params=req).json();
-        print(result)
+        #print(result)
         sectCorpus[sections[i-1]] = BeautifulSoup(result["parse"]["text"]).get_text()
         i+=1
     ret.setSections(sectCorpus)
-    addCorpus(ret, pageTitle)
+    ret.setCorpus(parseWikiHMTL(pageTitle))
+    #addCorpus(ret, pageTitle)
     return ret
 
 def createSectionsDictionary(pageTitle):
@@ -182,9 +183,43 @@ def getRandomCategories():
         retList.extend(result["query"]["pages"][0]["categories"])
     return retList
 
+def parseWikiHMTL(pageTitle):
+    req = {"action":"parse",
+            "format":"json",
+            "page":pageTitle,
+            "formatversion":2,
+            "prop": "text"}
+    result = requests.get(API_LINK, params=req).json();
+    page = result["parse"]["text"]
+    soup = BeautifulSoup(page)
+    for elem in soup.find_all("img"):
+        elem.decompose()
+    for elem in soup.find_all(class_="navbox"):
+        elem.decompose()
+    for elem in soup.find_all(class_="reflist"):
+        elem.decompose()
+    for elem in soup.find_all("table"):
+        elem.decompose()
+    for elem in soup.find_all(class_="refbegin"):
+        elem.decompose()
+    for elem in soup.find_all(class_="reference"):
+        elem.decompose()
+    for elem in soup.find_all(class_="external"):
+        elem.decompose()
+    for elem in soup.find_all(class_="image"):
+        elem.decompose()
+    for elem in soup.find_all(class_="mw-editsection"):
+        elem.decompose()
+    for elem in soup.find_all(class_="mw-headline"):
+        elem.decompose()
+    #print(soup.get_text())
+    return soup.get_text()
+
+
 if __name__ == "__main__":
-    createArticleByTitle("Canada")
-    createArticleByTitleList(["Ireland", "Iceland"])
-    createArticlesByCategory("Classical_studies",10)
-    createArticlesByCategory("Classics",10)
-    createSectionsByTitle("Canada")
+    #createArticleByTitle("Canada")
+    #createArticleByTitleList(["Ireland", "Iceland"])
+    #createArticlesByCategory("Classical_studies",10)
+    #createArticlesByCategory("Classics",10)
+    #createSectionsByTitle("Canada")
+    parseWikiHMTL("Airbus_A310")
